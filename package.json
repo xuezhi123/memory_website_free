@@ -1,0 +1,21 @@
+{
+  "name": "memory-website",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/astro-cli.mjs dev",
+    "build": "node scripts/astro-cli.mjs check && node scripts/astro-cli.mjs build",
+    "preview": "wrangler pages dev ./dist",
+    "hash-password": "node scripts/hash-password.mjs"
+  },
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/cloudflare": "^12.6.8",
+    "astro": "^5.16.0",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "wrangler": "^4.45.0"
+  }
+}

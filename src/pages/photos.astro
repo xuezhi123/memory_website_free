@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import { photos } from "../data/site";
+---
+
+<BaseLayout title="Photos" isPrivate>
+  <Header privateNav />
+  <main class="shell page">
+    <h1>Photos</h1>
+    <p class="lead">A collection of memorable moments.</p>
+    <div class="photo-wall">
+      {photos.map((photo) => (
+        <figure>
+          <img src={photo.src} alt={photo.caption} loading="lazy" />
+          <figcaption>{photo.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .photo-wall {
+    column-count: 2;
+    column-gap: 18px;
+    margin-top: 24px;
+  }
+
+  .photo-wall figure {
+    margin: 0 0 18px;
+    break-inside: avoid;
+  }
+
+  .photo-wall img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    background: var(--soft);
+    box-shadow: 0 4px 16px rgba(140, 62, 56, 0.12);
+    padding: 8px;
+    border: none;
+  }
+
+  .photo-wall figcaption {
+    color: var(--muted);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 980px) {
+    .photo-wall {
+      column-count: 1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .photo-wall {
+      column-count: 1;
+    }
+  }
+</style>

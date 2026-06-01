@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import { site } from "../data/site";
+---
+
+<BaseLayout>
+  <Header />
+  <main class="shell page hero">
+    <p class="eyebrow">{site.years}</p>
+    <h1>{site.name}</h1>
+    <p class="lead">{site.dedication}</p>
+    <div class="actions">
+      <a class="button" href="/login">Enter Memorial</a>
+    </div>
+  </main>
+  <section class="band">
+    <div class="shell intro">
+      <h2>A Quiet Corner for Family & Friends</h2>
+      <p>
+        This page preserves a life story, photos, and memorial articles.
+        Please contact family members for the access password.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    min-height: 52vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .intro {
+    max-width: 720px;
+  }
+</style>

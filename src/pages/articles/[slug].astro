@@ -1,0 +1,219 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/Header.astro";
+import { getCollection, getEntry } from "astro:content";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("articles");
+  return articles.map((entry) => ({
+    params: { slug: entry.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const entry = await getEntry("articles", slug!);
+
+if (!entry) {
+  return Astro.redirect("/404");
+}
+
+const { Content } = await entry.render();
+const { title, date, excerpt } = entry.data;
+---
+
+<BaseLayout title={title} isPrivate>
+  <Header privateNav />
+  <main class="shell page">
+    <a class="back" href="/articles">&larr; Back to Articles</a>
+    <div class="zoom-controls">
+      <button class="zoom-btn active" data-level="0">S</button>
+      <button class="zoom-btn" data-level="1">M</button>
+      <button class="zoom-btn" data-level="2">L</button>
+    </div>
+    <article class="article" id="article-body">
+      <header class="article-header">
+        <p class="eyebrow">{date}</p>
+        <h1>{title}</h1>
+        {excerpt && <p class="excerpt">{excerpt}</p>}
+      </header>
+      <div class="prose">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
+
+<script>
+  const article = document.getElementById("article-body")!;
+  const levels = ["zoom-1", "zoom-2", "zoom-3"];
+  let current = 0;
+
+  function applyZoom() {
+    article.className = "article " + levels[current];
+    document.querySelectorAll('.zoom-btn').forEach((btn, i) => {
+      btn.classList.toggle('active', i === current);
+    });
+    localStorage.setItem("article-zoom", current.toString());
+  }
+
+  document.querySelectorAll('.zoom-btn').forEach((btn, i) => {
+    btn.addEventListener('click', () => {
+      current = i;
+      applyZoom();
+    });
+  });
+
+  const saved = localStorage.getItem("article-zoom");
+  if (saved !== null) current = Math.min(parseInt(saved, 10), levels.length - 1);
+  applyZoom();
+</script>
+
+<style>
+  .back {
+    display: inline-block;
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 32px;
+    transition: color 0.2s;
+  }
+
+  .back:hover {
+    color: var(--accent);
+  }
+
+  .article {
+    max-width: 680px;
+    --zoom: 1;
+  }
+
+  .article.zoom-1 { --zoom: 1; }
+  .article.zoom-2 { --zoom: 1.25; }
+  .article.zoom-3 { --zoom: 1.5; }
+
+  .zoom-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 28px;
+  }
+
+  .zoom-btn {
+    padding: 6px 16px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: rgba(255,255,255,0.6);
+    color: var(--ink);
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .zoom-btn:hover {
+    background: rgba(255,255,255,0.9);
+    border-color: var(--accent);
+  }
+
+  .zoom-btn.active {
+    background: var(--accent);
+    color: #f2ece3;
+    border-color: var(--accent);
+  }
+
+  .article-header {
+    margin-bottom: 40px;
+    text-align: center;
+  }
+
+  .article-header h1 {
+    font-size: clamp(28px, 5vw, 40px);
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    margin-bottom: 16px;
+    color: #2b2422;
+    font-weight: 700;
+  }
+
+  .article-header .eyebrow {
+    margin-bottom: 14px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: #2b2422;
+    font-weight: 700;
+  }
+
+  .excerpt {
+    max-width: 520px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: calc(17px * var(--zoom));
+    line-height: 1.7;
+  }
+
+  .prose {
+    font-size: calc(17px * var(--zoom));
+    line-height: 2;
+    color: #2b2422;
+  }
+
+  .prose :global(p) {
+    margin: 0 0 calc(1.6em * var(--zoom));
+  }
+
+  .prose :global(h2) {
+    font-size: calc(22px * var(--zoom));
+    margin: calc(2em * var(--zoom)) 0 0.6em;
+    font-weight: 700;
+  }
+
+  .prose :global(h3) {
+    font-size: calc(19px * var(--zoom));
+    margin: calc(1.6em * var(--zoom)) 0 0.5em;
+    font-weight: 700;
+    color: #2b2422;
+  }
+
+  .prose :global(blockquote) {
+    margin: calc(1.6em * var(--zoom)) 0;
+    padding: 14px 0 14px 20px;
+    border-left: 3px solid var(--accent);
+    color: #2b2422;
+    font-style: italic;
+  }
+
+  .prose :global(hr) {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: calc(2.4em * var(--zoom)) auto;
+    width: 60px;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.4em;
+    margin-bottom: calc(1.6em * var(--zoom));
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.4em;
+  }
+
+  .prose :global(img) {
+    border-radius: 6px;
+    margin: calc(1.6em * var(--zoom)) auto;
+  }
+
+  @media (max-width: 560px) {
+    .article-header h1 {
+      font-size: 26px;
+    }
+
+    .prose {
+      font-size: calc(16px * var(--zoom));
+      line-height: 1.85;
+    }
+
+    .excerpt {
+      font-size: calc(15px * var(--zoom));
+    }
+  }
+</style>

@@ -1,0 +1,30 @@
+---
+import { site } from "../data/site";
+
+interface Props {
+  privateNav?: boolean;
+}
+
+const { privateNav = false } = Astro.props;
+---
+
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <span class="brand">{site.title}</span>
+    <nav class="nav" aria-label="Main navigation">
+      {privateNav ? (
+        <>
+          <a href="/memory">🏠 Home</a>
+          <a href="/timeline">📖 Life Story</a>
+          <a href="/photos">📷 Photos</a>
+          <a href="/articles">✍️ Articles</a>
+          <form method="post" action="/api/logout">
+            <button type="submit">↪ Logout</button>
+          </form>
+        </>
+      ) : (
+        <a href="/login">Enter Memorial</a>
+      )}
+    </nav>
+  </div>
+</header>

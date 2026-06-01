@@ -1,0 +1,11 @@
+# Optional: override the default password (123456) for local development.
+# If not set, the project uses a built-in default password.
+#
+# To set a custom password:
+# 1. Run: node scripts/hash-password.mjs YOUR_PASSWORD
+# 2. Copy the output hash below
+# ACCESS_PASSWORD_HASH=sha256:YOUR_HASH_HERE
+#
+# SESSION_SECRET is optional for local dev (a default is used).
+# In production, set this to a random 32+ character string.
+# SESSION_SECRET=your-random-secret-key

@@ -1,0 +1,69 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import { timeline } from "../data/site";
+---
+
+<BaseLayout title="Life Story" isPrivate>
+  <Header privateNav />
+  <main class="shell page">
+    <h1>Life Story</h1>
+    <p class="lead">A look back at the journey of a remarkable life.</p>
+    <ol class="timeline">
+      {timeline.map((item) => (
+        <li>
+          <time>{item.year}</time>
+          <div>
+            <h2>{item.title}</h2>
+            <p set:html={item.body.replace(/\n/g, '<br>')}></p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </main>
+</BaseLayout>
+
+<style>
+  .timeline {
+    list-style: none;
+    padding: 22px 0 0;
+    margin: 0;
+    display: grid;
+    gap: 18px;
+  }
+
+  li {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: 18px;
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+  }
+
+  time {
+    color: #4a5d4a;
+    font-weight: 900;
+    font-size: 18px;
+  }
+
+  h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .lead {
+    color: var(--muted);
+  }
+
+  p {
+    color: #2b2422;
+  }
+
+  @media (max-width: 560px) {
+    li {
+      grid-template-columns: 1fr;
+      gap: 6px;
+    }
+  }
+</style>

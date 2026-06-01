@@ -1,0 +1,148 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+import { photos, site } from "../data/site";
+
+---
+
+<BaseLayout title="Memorial" isPrivate>
+  <Header privateNav />
+  <main class="shell page">
+    <p class="eyebrow">{site.years}</p>
+    <h1>{site.title}</h1>
+    <p class="lead">{site.dedication}</p>
+  </main>
+  <section class="band">
+    <div class="shell nav-cards">
+      <a href="/timeline" class="nav-card">
+        <span class="nav-icon">📖</span>
+        <h3>Life Story</h3>
+        <p>A journey through key milestones.</p>
+        <span class="nav-link">View Timeline &rarr;</span>
+      </a>
+      <a href="/photos" class="nav-card">
+        <span class="nav-icon">📷</span>
+        <h3>Photos</h3>
+        <p>Memorable moments captured in time.</p>
+        <span class="nav-link">View Gallery &rarr;</span>
+      </a>
+      <a href="/articles" class="nav-card">
+        <span class="nav-icon">✍️</span>
+        <h3>Memorial Articles</h3>
+        <p>Words of remembrance from family and friends.</p>
+        <span class="nav-link">View Articles &rarr;</span>
+      </a>
+    </div>
+  </section>
+  <section class="band">
+    <div class="shell">
+      <div class="photo-feature">
+        <figure>
+          <img src={photos[0].src} alt={photos[0].caption} loading="eager" />
+          <figcaption>{photos[0].caption}</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .photo-feature {
+    margin: 0;
+  }
+
+  .photo-feature figure {
+    margin: 0;
+  }
+
+  .photo-feature img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+    background: var(--soft);
+    box-shadow: 0 8px 32px rgba(140, 62, 56, 0.15);
+    padding: 12px;
+    border: none;
+  }
+
+  .photo-feature figcaption {
+    color: var(--muted);
+    padding-top: 12px;
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .band {
+    border-top: none;
+    padding: 18px 0;
+  }
+
+  .band > .shell {
+    border-top: 3px solid var(--accent);
+    padding-top: 36px;
+  }
+
+  .nav-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+
+  .nav-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 28px 0 28px 24px;
+    border-radius: 0;
+    background: transparent;
+    border-left: 4px solid var(--accent-dark);
+    border-bottom: none;
+    box-shadow: 0 6px 24px rgba(140, 62, 56, 0.2);
+    transform: translateX(6px);
+    transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .nav-card:hover {
+    transform: translateX(6px);
+    box-shadow: 0 6px 24px rgba(140, 62, 56, 0.2);
+    border-left-color: var(--accent-dark);
+  }
+
+  .nav-icon {
+    font-size: 28px;
+    line-height: 1;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .nav-card h3 {
+    font-size: 22px;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  .nav-card p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .nav-link {
+    margin-top: auto;
+    padding-top: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #8c3e38;
+  }
+
+  @media (max-width: 760px) {
+    .nav-cards {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

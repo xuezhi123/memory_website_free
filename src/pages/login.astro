@@ -1,0 +1,83 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/Header.astro";
+
+const next = Astro.url.searchParams.get("next") ?? "/memory";
+const error = Astro.url.searchParams.get("error");
+---
+
+<BaseLayout title="Access Password">
+  <Header />
+  <main class="shell page login-page">
+    <section class="login-panel">
+      <h1>Please Enter Access Password</h1>
+      <p class="eyebrow">Contact family members to obtain the password.</p>
+      <form method="post" action="/api/login" class="login-form">
+        <input type="hidden" name="next" value={next} />
+        <label>
+          Access Password
+          <input name="password" type="password" autocomplete="current-password" required />
+        </label>
+        {error && <p class="error">Incorrect password, please try again.</p>}
+        <button class="button" type="submit">Enter</button>
+      </form>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .login-page {
+    min-height: 70vh;
+    display: grid;
+    place-items: center;
+  }
+
+  .login-panel {
+    width: min(100%, 520px);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.62);
+    padding: 26px;
+  }
+
+  .login-panel .eyebrow {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    margin-bottom: 4px;
+  }
+
+  .login-panel h1 {
+    font-size: 22px;
+    margin-bottom: 6px;
+  }
+
+  .login-form {
+    display: grid;
+    gap: 14px;
+    margin-top: 18px;
+  }
+
+  label {
+    display: grid;
+    gap: 6px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  input {
+    width: 100%;
+    min-height: 46px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: white;
+    color: var(--ink);
+    padding: 8px 12px;
+  }
+
+  .error {
+    color: #9b2d22;
+    margin-bottom: 0;
+  }
+</style>
