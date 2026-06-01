@@ -1,3 +1,7 @@
+![Homepage Preview](screenshots/Page1.png)
+![Homepage Preview](screenshots/Page2.png)
+![Homepage Preview](screenshots/Page3_home.png)
+
 # Memorial Website
 
 A password-protected memorial website built with [Astro](https://astro.build) and deployed on [Cloudflare Pages](https://pages.cloudflare.com).
